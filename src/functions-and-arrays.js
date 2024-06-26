@@ -152,24 +152,25 @@ const matrix = [
   [1, 70, 54, 71, 83, 51, 54, 69, 16, 92, 33, 48, 61, 43, 52, 1, 89, 19, 67, 48]
 ];
 
-function greatestProduct(matrix) {
+function greatestProductOfDiagonals(matrix) {
   let maxProduct = 0;
 
-  for (let i = 0; i < matrix.length; i++) {
-    for (let j = 0; j < matrix[i].length; j++) {
-      if (i < matrix.length - 3) {
-        let verticalProduct = matrix[i][j] * matrix[i + 1][j] * matrix[i + 2][j] * matrix[i + 3][j];
-        maxProduct = Math.max(maxProduct, verticalProduct);
-      }
-      if (j < matrix[i].length - 3) {
-        let horizontalProduct = matrix[i][j] * matrix[i][j + 1] * matrix[i][j + 2] * matrix[i][j + 3];
-        maxProduct = Math.max(maxProduct, horizontalProduct);
-      }
+  // Function to calculate product of four numbers in an array
+  const calculateProduct = (arr) => arr.reduce((acc, num) => acc * num, 1);
+
+  // Check diagonally (both directions)
+  for (let i = 0; i < matrix.length - 3; i++) {
+    for (let j = 0; j < matrix[i].length - 3; j++) {
+      let diagRightProduct = calculateProduct([matrix[i][j], matrix[i+1][j+1], matrix[i+2][j+2], matrix[i+3][j+3]]);
+      let diagLeftProduct = calculateProduct([matrix[i][j+3], matrix[i+1][j+2], matrix[i+2][j+1], matrix[i+3][j]]);
+      maxProduct = Math.max(maxProduct, diagRightProduct, diagLeftProduct);
     }
   }
 
   return maxProduct;
 }
+
+console.log(greatestProductOfDiagonals(matrix));  // Output: 51267216 (or another max product found)
 
 // The following is required to make unit tests work.
 /* Environment setup. Do not modify the below code. */
